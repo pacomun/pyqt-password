@@ -1,0 +1,4 @@
+#+TITLE: Notas sobre aplicaciones con qt6
+
+* Fuente:
+- [[https://doc.qt.io/qtforpython/quickstart.html][Documentación]]
