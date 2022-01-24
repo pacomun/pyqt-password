@@ -1,4 +1,85 @@
-#+TITLE: Notas sobre aplicaciones con qt6
+#+TITLE: Notas sobre aplicaciones con qt para Python
 
 * Fuente:
 - [[https://doc.qt.io/qtforpython/quickstart.html][Documentación]]
+
+* Inicio Rápido
+
+Para poder utilizar qtforpython tenemos que instalar la versión 3.6+
+de Python. Vamos a instalar desde ~pip~ dentro de un entorno virtual
+
+#+begin_src shell-script :tangle no
+python  -m venv venv
+source ./venv/bin/activate
+#+end_src
+
+** Instalación
+~pip install pyside6~ para la última versión
+~pip install pyside6==6.0.~ para la versión 6.0 específicamente.
+
+Comprobar la instalación
+
+#+begin_src python :tangle version_qt.py
+import PySide6.QtCore
+
+# Imprime la versión
+print(PySide6.__version__)
+
+# Imprime la versión de Qt usada para compilar PySide6
+print(PySide6.QtCore.__version__)
+#+end_src
+
+* Hola mundo
+ Creamos nuestra primera aplicación, que no puede ser otra que *hola
+ mundo*, con el siguiente código
+
+ #+begin_src python :tangle hola_mundo.py
+import sys
+import random
+from PySide6 import QtCore, QtWidgets, QtGui
+ #+end_src
+
+ PySide6 accede a la API de Qt así como a submódulos, que en ta
+ ocasión accedemos a QtCore, QtWidgets y QtGui.
+
+ Creamos una clase =MyWidget=, la cual hereda de /QWiget/ y contiene
+ un botón y una etiqueta.
+
+ #+begin_src python :tangle hola_mundo.py
+
+class MyWidget(QtWidgets.QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.hello = ["Hallo Welt", "Hei maailma", "Hola Mundo", "Привет мир"]
+        self.button = QtWidgets.QPushButton("click me!")
+        self.text = QtWidgets.QLabel("Hello World",
+                                     alignment=QtCore.Qt.AlignCenter)
+
+        self.layout = QtWidgets.QVBoxLayout(self)
+        self.layout.addWidget(self.text)
+        self.layout.addWidget(self.button)
+
+        self.button.clicked.connect(self.magic)
+
+    @QtCore.Slot()
+    def magic(self):
+        self.text.setText(random.choice(self.hello))
+ #+end_src
+
+ La función miembro ~magic~ se encarga de elegir un elemento de la
+ lista de forma aleatoria.
+
+ La ejecución de la aplicación.
+
+ #+begin_src python :tangle hola_mundo.py
+
+if __name__ == '__main__':
+    app = QtWidgets.QApplication([])
+
+    widget = MyWidget()
+    widget.resize(800, 600)
+    widget.show()
+
+    sys.exit(app.exec())
+ #+end_src
