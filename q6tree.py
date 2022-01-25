@@ -2,7 +2,7 @@
 
 """
 import sys
-from PyQt5.QtWidgets import QApplication, QTreeWidget, QTreeWidgetItem
+from PySide6.QtWidgets import QApplication, QTreeWidget, QTreeWidgetItem
 
 
 data = {"Project A": ["file_a.py", "file_a.txt", "something.xls"],
