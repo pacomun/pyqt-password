@@ -1,4 +1,4 @@
-"""Ejemplo de la documentación para QTreeView.
+"""Ejemplo de laj documentación para QTreeView.
 
 """
 import sys

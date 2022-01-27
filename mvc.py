@@ -44,18 +44,26 @@ desplegar_ruta(lst_leida)
 
 app = QApplication(sys.argv)
 
+
 tree = QTreeWidget()
 tree.setColumnCount(2)
 tree.setHeaderLabels(["Claves", "ruta"])
+tree.header().setDefaultSectionSize(300)
 
 items = []
 for value in lst_leida:
     if isinstance(value, list):
-        item = QTreeWidgetItem([value[0].name])
+        item = QTreeWidgetItem([value[0].name,
+                                value[0].path])
         for sub_value in value[1:]:
             nombre = sub_value.name.removesuffix('.gpg')
-            child = QTreeWidgetItem([nombre])
+            archivo = sub_value.path
+            child = QTreeWidgetItem([nombre, archivo])
             item.addChild(child)
+        items.append(item)
+    else:
+        item = QTreeWidgetItem([value.name.removesuffix('.gpg'),
+                                value.path])
         items.append(item)
 
 tree.insertTopLevelItems(0, items)
