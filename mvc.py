@@ -3,8 +3,8 @@
 """
 import sys
 import os
-from PyQt5.QtWidgets import QApplication, QTreeWidget, QTreeWidgetItem
-
+from PyQt5.QtWidgets import (QApplication, QTreeWidget, QTreeWidgetItem,
+                             QVBoxLayout, QWidget)
 
 ALMACEN = '/home/pacomun/tmp/password-store'
 
@@ -26,9 +26,6 @@ def leer_almacen(ruta):
     return listado
 
 
-lst_leida = leer_almacen(ALMACEN)
-
-
 def desplegar_ruta(listado):
     """Imprime la lista en formato adecuado."""
     for elemento in listado:
@@ -39,34 +36,56 @@ def desplegar_ruta(listado):
             print(elemento.name.removesuffix('.gpg'))
 
 
-desplegar_ruta(lst_leida)
+class Visor(QWidget):
+    """Clase principal de la aplicación Qt_password"""
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle('Contraseñas')
+        self.setGeometry(600, 300, 800, 300)
 
+        self.tree = QTreeWidget(self)
+        self.tree.setHeaderLabels(['Claves', 'ruta'])
+        self.tree.header().setDefaultSectionSize(300)
+        self.tree.hideColumn(1)
+        self.tree.selectionModel().currentChanged.connect(self.seleccion)
+        self.importar_datos(lst_leida)
+        self.empaquetar_widgets()
 
-app = QApplication(sys.argv)
+    def empaquetar_widgets(self):
+        """Empaqueta los widgets en la ventana."""
+        layout = QVBoxLayout(self)
+        layout.addWidget(self.tree)
 
+    def importar_datos(self, datos):
+        """Función que carga en el visor los datos de la
+        lista pasada como argumento."""
+        items = []
+        for value in datos:
+            if isinstance(value, list):
+                item = QTreeWidgetItem([value[0].name,
+                                        value[0].path])
+                for sub_value in value[1:]:
+                    nombre = sub_value.name.removesuffix('.gpg')
+                    archivo = sub_value.path
+                    child = QTreeWidgetItem([nombre, archivo])
+                    item.addChild(child)
+                items.append(item)
+            else:
+                item = QTreeWidgetItem([value.name.removesuffix('.gpg'),
+                                        value.path])
+                items.append(item)
 
-tree = QTreeWidget()
-tree.setColumnCount(2)
-tree.setHeaderLabels(["Claves", "ruta"])
-tree.header().setDefaultSectionSize(300)
+        self.tree.insertTopLevelItems(0, items)
 
-items = []
-for value in lst_leida:
-    if isinstance(value, list):
-        item = QTreeWidgetItem([value[0].name,
-                                value[0].path])
-        for sub_value in value[1:]:
-            nombre = sub_value.name.removesuffix('.gpg')
-            archivo = sub_value.path
-            child = QTreeWidgetItem([nombre, archivo])
-            item.addChild(child)
-        items.append(item)
-    else:
-        item = QTreeWidgetItem([value.name.removesuffix('.gpg'),
-                                value.path])
-        items.append(item)
+    def seleccion(self, index):
+        print(index.data())
+        print(index.sibling(index.row(), 1).data())
 
-tree.insertTopLevelItems(0, items)
+if __name__ == '__main__':
+    lst_leida = leer_almacen(ALMACEN)
+    desplegar_ruta(lst_leida)
 
-tree.show()
-sys.exit(app.exec())
+    app = QApplication(sys.argv)
+    win = Visor()
+    win.show()
+    sys.exit(app.exec())
