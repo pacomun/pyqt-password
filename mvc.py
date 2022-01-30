@@ -4,7 +4,8 @@
 import sys
 import os
 from PyQt5.QtWidgets import (QApplication, QTreeWidget, QTreeWidgetItem,
-                             QVBoxLayout, QWidget)
+                             QVBoxLayout, QWidget, QPushButton,
+                             QHBoxLayout)
 
 ALMACEN = '/home/pacomun/tmp/password-store'
 
@@ -15,7 +16,8 @@ def leer_almacen(ruta):
         raise ValueError('La ruta no existe', ruta)
     listado = []
     for archivo in os.scandir(ruta):
-        if not archivo.name.startswith('.') and not archivo.name.startswith('_'):
+        if (not archivo.name.startswith('.')
+            and not archivo.name.startswith('_')):
             if archivo.is_file():
                 listado.append(archivo)
             elif archivo.is_dir():
@@ -31,7 +33,8 @@ def desplegar_ruta(listado):
     for elemento in listado:
         if isinstance(elemento, list):
             for sub_elem in elemento[1:]:
-                print(elemento[0].name, '->', sub_elem.name.removesuffix('.gpg'))
+                print(elemento[0].name, '->',
+                      sub_elem.name.removesuffix('.gpg'))
         else:
             print(elemento.name.removesuffix('.gpg'))
 
@@ -52,10 +55,32 @@ class Visor(QWidget):
         self.importar_datos(lst_leida)
         self.empaquetar_widgets()
 
+    def botones_git(self):
+        """Crear botones."""
+        b_subir_al_servidor = QPushButton("Subir al servidor")
+        b_bajar_del_servidor = QPushButton("Bajar del servidor")
+        layout_git = QHBoxLayout(self)
+        layout_git.addWidget(b_subir_al_servidor)
+        layout_git.addWidget(b_bajar_del_servidor)
+        return layout_git
+
+    def botones_edicion(self):
+        "Crea los botones para editar y devueve la capa."
+        b_borrar = QPushButton("Borrar")
+        b_editar = QPushButton("Editar")
+        b_nuevo = QPushButton("Nuevo")
+        layout_edit = QHBoxLayout(self)
+        layout_edit.addWidget(b_borrar, 0)
+        layout_edit.addWidget(b_editar, 0)
+        layout_edit.addWidget(b_nuevo, 0)
+        return layout_edit
+
     def empaquetar_widgets(self):
         """Empaqueta los widgets en la ventana."""
         layout = QVBoxLayout(self)
+        layout.addLayout(self.botones_git())
         layout.addWidget(self.tree)
+        layout.addLayout(self.botones_edicion())
 
     def importar_datos(self, datos):
         """Función que carga en el visor los datos de la
@@ -79,11 +104,13 @@ class Visor(QWidget):
         self.tree.insertTopLevelItems(0, items)
 
     def seleccion(self, index):
+        """Hace algo al cambiar la selección"""
         if __debug__:
             print(index.data())
             print(index.sibling(index.row(), 1).data())
 
     def doble_clicked(self, item, fila):
+        """Hará algo al hacer doble click en la fila."""
         if __debug__:
             print('Padre', item.text(fila))
             print('Texto: ', item.text(1))
