@@ -7,6 +7,8 @@ from PyQt5.QtWidgets import (QApplication, QTreeWidget, QTreeWidgetItem,
                              QVBoxLayout, QWidget, QPushButton,
                              QHBoxLayout)
 from PyQt5.QtCore import Qt
+from dialogos import DialogEdit
+
 
 ALMACEN = '/home/pacomun/tmp/password-store'
 
@@ -18,7 +20,7 @@ def leer_almacen(ruta):
     listado = []
     for archivo in os.scandir(ruta):
         if (not archivo.name.startswith('.')
-            and not archivo.name.startswith('_')):
+                and not archivo.name.startswith('_')):
             if archivo.is_file():
                 listado.append(archivo)
             elif archivo.is_dir():
@@ -56,6 +58,8 @@ class Visor(QWidget):
         self.importar_datos(lst_leida)
         self.empaquetar_widgets()
 
+        self.selected = ''
+
     def botones_git(self):
         """Crear botones."""
         b_subir_al_servidor = QPushButton("Subir al servidor")
@@ -71,6 +75,7 @@ class Visor(QWidget):
         b_borrar = QPushButton("Borrar")
         b_editar = QPushButton("Editar")
         b_nuevo = QPushButton("Nuevo")
+        b_nuevo.clicked.connect(self.nueva_password)
         layout_edit = QHBoxLayout()
         layout_edit.addStretch(1)
         layout_edit.addWidget(b_borrar)
@@ -112,12 +117,18 @@ class Visor(QWidget):
         if __debug__:
             print(index.data())
             print(index.sibling(index.row(), 1).data())
+        self.selected = index.sibling(index.row(), 1).data()
 
     def doble_clicked(self, item, fila):
         """Hará algo al hacer doble click en la fila."""
         if __debug__:
             print('Padre', item.text(fila))
             print('Texto: ', item.text(1))
+
+    def nueva_password(self):
+        """Abrimos Diálogo para recibir datos del usuario."""
+        dialogo = DialogEdit('Nueva Password', parent=self)
+        dialogo.show()
 
 
 if __name__ == '__main__':
