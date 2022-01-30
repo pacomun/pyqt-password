@@ -79,18 +79,20 @@ class Visor(QWidget):
         self.tree.insertTopLevelItems(0, items)
 
     def seleccion(self, index):
-        print(index.data())
-        print(index.sibling(index.row(), 1).data())
+        if __debug__:
+            print(index.data())
+            print(index.sibling(index.row(), 1).data())
 
     def doble_clicked(self, item, fila):
-        print(item, fila)
-        print('Hijos', item.childCount())
-        print('Texto: ', item.text(1))
+        if __debug__:
+            print('Padre', item.text(fila))
+            print('Texto: ', item.text(1))
 
 
 if __name__ == '__main__':
     lst_leida = leer_almacen(ALMACEN)
-    desplegar_ruta(lst_leida)
+    if __debug__:
+        desplegar_ruta(lst_leida)
 
     app = QApplication(sys.argv)
     win = Visor()
