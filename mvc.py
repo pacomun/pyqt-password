@@ -48,6 +48,7 @@ class Visor(QWidget):
         self.tree.header().setDefaultSectionSize(300)
         self.tree.hideColumn(1)
         self.tree.selectionModel().currentChanged.connect(self.seleccion)
+        self.tree.itemDoubleClicked.connect(self.doble_clicked)
         self.importar_datos(lst_leida)
         self.empaquetar_widgets()
 
@@ -80,6 +81,12 @@ class Visor(QWidget):
     def seleccion(self, index):
         print(index.data())
         print(index.sibling(index.row(), 1).data())
+
+    def doble_clicked(self, item, fila):
+        print(item, fila)
+        print('Hijos', item.childCount())
+        print('Texto: ', item.text(1))
+
 
 if __name__ == '__main__':
     lst_leida = leer_almacen(ALMACEN)
