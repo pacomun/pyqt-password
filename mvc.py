@@ -6,6 +6,7 @@ import os
 from PyQt5.QtWidgets import (QApplication, QTreeWidget, QTreeWidgetItem,
                              QVBoxLayout, QWidget, QPushButton,
                              QHBoxLayout)
+from PyQt5.QtCore import Qt
 
 ALMACEN = '/home/pacomun/tmp/password-store'
 
@@ -59,9 +60,10 @@ class Visor(QWidget):
         """Crear botones."""
         b_subir_al_servidor = QPushButton("Subir al servidor")
         b_bajar_del_servidor = QPushButton("Bajar del servidor")
-        layout_git = QHBoxLayout(self)
+        layout_git = QHBoxLayout()
         layout_git.addWidget(b_subir_al_servidor)
         layout_git.addWidget(b_bajar_del_servidor)
+        layout_git.addStretch(1)
         return layout_git
 
     def botones_edicion(self):
@@ -69,15 +71,17 @@ class Visor(QWidget):
         b_borrar = QPushButton("Borrar")
         b_editar = QPushButton("Editar")
         b_nuevo = QPushButton("Nuevo")
-        layout_edit = QHBoxLayout(self)
-        layout_edit.addWidget(b_borrar, 0)
-        layout_edit.addWidget(b_editar, 0)
-        layout_edit.addWidget(b_nuevo, 0)
+        layout_edit = QHBoxLayout()
+        layout_edit.addStretch(1)
+        layout_edit.addWidget(b_borrar)
+        layout_edit.addWidget(b_editar)
+        layout_edit.addWidget(b_nuevo)
         return layout_edit
 
     def empaquetar_widgets(self):
         """Empaqueta los widgets en la ventana."""
         layout = QVBoxLayout(self)
+        layout.setSpacing(10)
         layout.addLayout(self.botones_git())
         layout.addWidget(self.tree)
         layout.addLayout(self.botones_edicion())
