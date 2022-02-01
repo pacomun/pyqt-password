@@ -3,11 +3,13 @@
 """
 import sys
 import os
+from pathlib import Path
 from PyQt5.QtWidgets import (QApplication, QTreeWidget, QTreeWidgetItem,
                              QVBoxLayout, QWidget, QPushButton,
-                             QHBoxLayout)
+                             QHBoxLayout, QMessageBox)
 from PyQt5.QtCore import Qt
-from dialogos import DialogEdit
+from helpGit.dialogos import DialogEdit
+from helpGit.helpgnupg import descifrar_archivo
 
 
 ALMACEN = '/home/pacomun/tmp/password-store'
@@ -125,11 +127,20 @@ class Visor(QWidget):
         if __debug__:
             print('Padre', item.text(fila))
             print('Texto: ', item.text(1))
+        if not Path(item.text(1)).is_dir():
+            contenido = descifrar_archivo(item.text(1))
+            dialogo = QMessageBox()
+            if len(contenido) > 1:
+                texto = '\n'.join(contenido[1:])
+                dialogo.setInformativeText(texto)
+            dialogo.setWindowTitle(item.text(fila))
+            dialogo.setText(contenido[0])
+            dialogo.exec()
 
     def nueva_password(self):
         """Abrimos Diálogo para recibir datos del usuario."""
         dialogo = DialogEdit('Nueva Password', parent=self)
-        dialogo.show()
+        dialogo.exec()
 
 
 def main():
