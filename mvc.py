@@ -13,24 +13,6 @@ from dialogos import DialogEdit
 ALMACEN = '/home/pacomun/tmp/password-store'
 
 
-def leer_almacen(ruta):
-    """Guardamos en una lísta los archivo del almacén."""
-    if not os.path.exists(ruta):
-        raise ValueError('La ruta no existe', ruta)
-    listado = []
-    for archivo in os.scandir(ruta):
-        if (not archivo.name.startswith('.')
-                and not archivo.name.startswith('_')):
-            if archivo.is_file():
-                listado.append(archivo)
-            elif archivo.is_dir():
-                carpeta = leer_almacen(archivo.path)
-                carpeta.insert(0, archivo)
-                listado.append(carpeta)
-
-    return listado
-
-
 def desplegar_ruta(listado):
     """Imprime la lista en formato adecuado."""
     for elemento in listado:
@@ -44,10 +26,12 @@ def desplegar_ruta(listado):
 
 class Visor(QWidget):
     """Clase principal de la aplicación Qt_password"""
-    def __init__(self, parent=None):
+    def __init__(self, almacen, parent=None):
         super().__init__(parent)
         self.setWindowTitle('Contraseñas')
         self.setGeometry(600, 300, 800, 300)
+        self.almacen = almacen
+        self.lst_almacen = []
 
         self.tree = QTreeWidget(self)
         self.tree.setHeaderLabels(['Claves', 'ruta'])
@@ -55,7 +39,7 @@ class Visor(QWidget):
         self.tree.hideColumn(1)
         self.tree.selectionModel().currentChanged.connect(self.seleccion)
         self.tree.itemDoubleClicked.connect(self.doble_clicked)
-        self.importar_datos(lst_leida)
+        self.actualizar_datos()
         self.empaquetar_widgets()
 
         self.selected = ''
@@ -91,9 +75,10 @@ class Visor(QWidget):
         layout.addWidget(self.tree)
         layout.addLayout(self.botones_edicion())
 
-    def importar_datos(self, datos):
+    def actualizar_datos(self):
         """Función que carga en el visor los datos de la
         lista pasada como argumento."""
+        datos = self.leer_almacen(self.almacen)
         items = []
         for value in datos:
             if isinstance(value, list):
@@ -111,6 +96,22 @@ class Visor(QWidget):
                 items.append(item)
 
         self.tree.insertTopLevelItems(0, items)
+
+    def leer_almacen(self, ruta):
+        """Guardamos en una lísta los archivo del almacén."""
+        if not os.path.exists(ruta):
+            raise ValueError('La ruta no existe', ruta)
+        listado = []
+        for archivo in os.scandir(ruta):
+            if (not archivo.name.startswith('.')
+                    and not archivo.name.startswith('_')):
+                if archivo.is_file():
+                    listado.append(archivo)
+                elif archivo.is_dir():
+                    carpeta = self.leer_almacen(archivo.path)
+                    carpeta.insert(0, archivo)
+                    listado.append(carpeta)
+        return listado
 
     def seleccion(self, index):
         """Hace algo al cambiar la selección"""
@@ -131,12 +132,13 @@ class Visor(QWidget):
         dialogo.show()
 
 
-if __name__ == '__main__':
-    lst_leida = leer_almacen(ALMACEN)
-    if __debug__:
-        desplegar_ruta(lst_leida)
-
+def main():
+    """Función principal para desplegar aplicación."""
     app = QApplication(sys.argv)
-    win = Visor()
+    win = Visor(ALMACEN)
     win.show()
     sys.exit(app.exec())
+
+
+if __name__ == '__main__':
+    main()

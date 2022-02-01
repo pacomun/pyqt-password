@@ -16,6 +16,7 @@ class   DialogEdit(QDialog):
         self.setModal(True)
         self.values = values
         self.combo = QComboBox()
+        self.combo.setEditable(True)
         self.le_nombre = QLineEdit()
         self.le_password = QLineEdit()
         self.b_generar = QPushButton('Generar')
@@ -37,6 +38,13 @@ class   DialogEdit(QDialog):
         grid.addLayout(hbox, 4, 1)
         self.setContentsMargins(15, 20, 15, 20)
 
+    def get_carpetas(self):
+        """Extrae de values una lista con carpetas."""
+        lstcarpetas = ['/']
+        for value in self.values:
+            if isinstance(value, list):
+                lstcarpetas.append(value[0].name)
+        return lstcarpetas
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
