@@ -4,6 +4,8 @@
 import os
 from pathlib import Path
 import gnupg
+import secrets
+import string
 
 
 def get_recipient() -> str:
@@ -28,3 +30,9 @@ def descifrar_archivo(ruta: str) -> list:
             return (str(datos_claro).split('\n'))
 
     return None
+
+
+def generador(ndigit=8):
+    """ Generar contraseña segura de n-digitos."""
+    alphabet = string.ascii_letters + string.digits
+    return ''.join(secrets.choice(alphabet) for i in range(ndigit))

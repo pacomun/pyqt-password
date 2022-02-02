@@ -33,7 +33,6 @@ class Visor(QWidget):
         self.setWindowTitle('Contraseñas')
         self.setGeometry(600, 300, 800, 300)
         self.almacen = almacen
-        self.lst_almacen = []
 
         self.tree = QTreeWidget(self)
         self.tree.setHeaderLabels(['Claves', 'ruta'])
@@ -139,7 +138,9 @@ class Visor(QWidget):
 
     def nueva_password(self):
         """Abrimos Diálogo para recibir datos del usuario."""
-        dialogo = DialogEdit('Nueva Password', parent=self)
+        almacen = self.leer_almacen(self.almacen)
+        dialogo = DialogEdit('Nueva Password',
+                             parent=self, values=almacen)
         dialogo.exec()
 
 
