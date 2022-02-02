@@ -28,6 +28,7 @@ class   DialogEdit(QDialog):
         self.b_generar.clicked.connect(self.generar)
         self.text_edit = QTextEdit(self)
         self.b_aceptar = QPushButton('Aceptar')
+        self.b_aceptar.clicked.connect(self.boton_aceptar)
         self.b_cancelar = QPushButton('Cancelar')
 
         grid = QGridLayout(self)
@@ -59,7 +60,16 @@ class   DialogEdit(QDialog):
         """Generamos password y cumplimentamos la entrada."""
         password = helpgnupg.generador()
         self.le_password.setText(password)
-    
+
+    def boton_aceptar(self):
+        """Recuperar datos cumplimentados."""
+        if __debug__:
+            print('carpeta: ', self.combo.lineEdit().text())
+            print('nombre: ', self.le_nombre.text())
+            print('password: ', self.le_password.text())
+            print('datos extra: ', self.text_edit.toPlainText())
+
+        
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
