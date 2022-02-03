@@ -76,3 +76,36 @@ def borra_archivo_modificado(datos):
         arch = arch.joinpath(carpeta)
     arch = arch.joinpath(nombre)
     os.remove(arch)
+
+
+def cifrar_archivo(archivo):
+    """cifra un archivo con la clave por defecto
+    del usuario"""
+    gpg = gnupg.GPG(use_agent=True)
+    gpg.encoding = 'utf-8'
+    private_key = gpg.list_keys(True)
+    bandeja = private_key[0]['keyid']
+    if __debug__:
+        print('recipients: ', bandeja)
+
+    # Lectura de archivo en claro y cifrado
+    n_arch = archivo.parent
+    name_archivo = archivo.stem + '.gpg'
+    n_arch = n_arch.joinpath(name_archivo)
+    f_arch = open(archivo, 'r', encoding='utf-8')
+    texto_claro = f_arch.read()
+    if __debug__:
+        print('texto leído ', texto_claro)
+    f_arch.close()
+    encrypted_ascii_data = gpg.encrypt(
+        texto_claro,
+        bandeja,
+        output=n_arch
+    )
+    if __debug__:
+        print('datos cifrados', str(encrypted_ascii_data))
+
+    if encrypted_ascii_data.ok is True:
+        os.remove(archivo)
+    else:
+        print(encrypted_ascii_data.status)
