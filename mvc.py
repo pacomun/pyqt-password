@@ -33,6 +33,7 @@ class Visor(QWidget):
         self.setWindowTitle('Contraseñas')
         self.setGeometry(600, 300, 800, 300)
         self.almacen = almacen
+        os.chdir(self.almacen)
 
         self.tree = QTreeWidget(self)
         self.tree.setHeaderLabels(['Claves', 'ruta'])
