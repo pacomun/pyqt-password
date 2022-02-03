@@ -30,6 +30,7 @@ class   DialogEdit(QDialog):
         self.b_aceptar = QPushButton('Aceptar')
         self.b_aceptar.clicked.connect(self.boton_aceptar)
         self.b_cancelar = QPushButton('Cancelar')
+        self.b_cancelar.clicked.connect(self.close)
 
         grid = QGridLayout(self)
         grid.setSpacing(10)
