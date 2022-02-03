@@ -63,14 +63,21 @@ class   DialogEdit(QDialog):
         self.le_password.setText(password)
 
     def boton_aceptar(self):
-        """Recuperar datos cumplimentados."""
+        """Recuperar datos cumplimentados. Si todo va bien, se guarda
+        el archivo cifrado"""
         if __debug__:
             print('carpeta: ', self.combo.lineEdit().text())
             print('nombre: ', self.le_nombre.text())
             print('password: ', self.le_password.text())
             print('datos extra: ', self.text_edit.toPlainText())
+        datos = [self.combo.lineEdit().text(),
+                 self.le_nombre.text(),
+                 self.le_password.text(),
+                 self.text_edit.toPlainText()]
+        archivo = helpgnupg.guardar_archivo(datos)
+        helpgnupg.cifrar_archivo(archivo)
+        self.accept()
 
-        
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
