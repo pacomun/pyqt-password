@@ -82,6 +82,7 @@ class Visor(QWidget):
         lista pasada como argumento."""
         datos = self.leer_almacen(self.almacen)
         items = []
+        self.tree.clear()
         for value in datos:
             if isinstance(value, list):
                 item = QTreeWidgetItem([value[0].name,
@@ -142,7 +143,8 @@ class Visor(QWidget):
         almacen = self.leer_almacen(self.almacen)
         dialogo = DialogEdit('Nueva Password',
                              parent=self, values=almacen)
-        dialogo.exec()
+        dialogo.exec_()
+        self.actualizar_datos()
 
 
 def main():
