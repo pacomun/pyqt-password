@@ -59,6 +59,7 @@ class Visor(QWidget):
     def botones_edicion(self):
         "Crea los botones para editar y devueve la capa."
         b_borrar = QPushButton("Borrar")
+        b_borrar.clicked.connect(self.boton_borrar)
         b_editar = QPushButton("Editar")
         b_nuevo = QPushButton("Nuevo")
         b_nuevo.clicked.connect(self.nueva_password)
@@ -144,6 +145,31 @@ class Visor(QWidget):
         dialogo = DialogEdit('Nueva Password',
                              parent=self, values=almacen)
         dialogo.exec_()
+        self.actualizar_datos()
+
+    def boton_borrar(self):
+        """Borra el archivo seleccionado, con confirmación.
+        En caso de carpeta la borrará si está vacía."""
+        archivo_a_borrar = Path(self.selected)
+        if archivo_a_borrar.is_file():
+            msg = f'¿Quieres borrar definitivamente {archivo_a_borrar.name}?'
+            msgebox = QMessageBox()
+            msgebox.setIcon(QMessageBox.Warning)
+            msgebox.setText(msg)
+            msgebox.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+            msgebox.setDefaultButton(QMessageBox.No)
+            msgebox.setEscapeButton(QMessageBox.No)
+            res = msgebox.exec()
+            if res == QMessageBox.Yes:
+                archivo_a_borrar.unlink()
+        else:
+            try:
+                archivo_a_borrar.rmdir()
+            except OSError:
+                msgbox = QMessageBox()
+                msgbox.setIcon(QMessageBox.Information)
+                msgbox.setText('Para borrar la carpeta tiene que estar vacía')
+                msgbox.exec()
         self.actualizar_datos()
 
 
