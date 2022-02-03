@@ -49,9 +49,11 @@ def guardar_archivo(datos) -> bool | str:
     arch = w_dir
     if carpeta != '':
         arch = arch / carpeta
-        print('valor de arch: ', arch)
+        if __debug__:
+            print('valor de arch: ', arch)
         if arch.exists() is False:
-            print('Se crea la carpeta: ', arch)
+            if __debug__:
+                print('Se crea la carpeta: ', arch)
             os.mkdir(arch)
     arch = arch / nombre
     try:
@@ -68,7 +70,6 @@ def guardar_archivo(datos) -> bool | str:
 def borra_archivo_modificado(datos):
     """Borra archivo que construye con los
     datos pasados."""
-    print('llamada a borrar archivo...')
     carpeta, nombre, cont, extra = datos
     del cont, extra
     arch = Path.cwd()
