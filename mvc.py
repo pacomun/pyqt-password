@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import (QApplication, QTreeWidget, QTreeWidgetItem,
                              QVBoxLayout, QWidget, QPushButton,
                              QHBoxLayout, QMessageBox)
 from PyQt5.QtCore import Qt
-from helpGit.dialogos import DialogEdit
+from helpGit.dialogos import DialogEdit, DialogModificar
 from helpGit.helpgnupg import descifrar_archivo
 
 
@@ -61,6 +61,7 @@ class Visor(QWidget):
         b_borrar = QPushButton("Borrar")
         b_borrar.clicked.connect(self.boton_borrar)
         b_editar = QPushButton("Editar")
+        b_editar.clicked.connect(self.boton_editar)
         b_nuevo = QPushButton("Nuevo")
         b_nuevo.clicked.connect(self.nueva_password)
         layout_edit = QHBoxLayout()
@@ -172,6 +173,16 @@ class Visor(QWidget):
                 msgbox.setIcon(QMessageBox.Information)
                 msgbox.setText('Para borrar la carpeta tiene que estar vacía')
                 msgbox.exec()
+        self.actualizar_datos()
+
+    def boton_editar(self):
+        """Acción para el botón editar."""
+        almacen = self.leer_almacen(self.almacen)
+        if Path(self.selected).is_file():
+            dialogo_modificar = DialogModificar(self.selected,
+                                                "Modificar Ĉlave",
+                                                self, almacen)
+            dialogo_modificar.exec_()
         self.actualizar_datos()
 
 

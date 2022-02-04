@@ -2,6 +2,7 @@
 
 """
 import sys
+from pathlib import Path
 from helpGit import helpgnupg
 from PyQt5.QtWidgets import (QDialog, QPushButton, QLabel,
                              QLineEdit, QComboBox, QGridLayout,
@@ -77,6 +78,36 @@ class   DialogEdit(QDialog):
         archivo = helpgnupg.guardar_archivo(datos)
         helpgnupg.cifrar_archivo(archivo)
         self.accept()
+
+
+class DialogModificar(DialogEdit):
+    """Clase derivada de DialogoEdit para modificar una clave."""
+    def __init__(self, archivo, title, parent=None, values=None ):
+        super().__init__(title=title, parent=parent, values=values)
+        self.archivo = Path(archivo)
+        self.datos_iniciales = self.get_datos()
+        print('datos_iniciales: ', self.datos_iniciales)
+        self.combo.lineEdit().setText(self.datos_iniciales[0])
+        self.le_nombre.setText(self.datos_iniciales[1])
+        self.le_password.setText(self.datos_iniciales[2])
+        self.text_edit.setText(self.datos_iniciales[3])
+
+    def get_datos(self) -> list:
+        """Devuelve lista con los siguiente valores: carpeta,
+        nombre, password, y datos extra.
+
+        """
+        carpeta = self.archivo.parents[0].name
+        nombre = self.archivo.stem
+        lst_contenido = helpgnupg.descifrar_archivo(self.archivo)
+        if len(lst_contenido) > 1:
+            datos_extra = '\n'.join(lst_contenido[1:])
+        else:
+            datos_extra = ''
+        password = lst_contenido[0]
+
+        return [carpeta, nombre, password, datos_extra]
+
 
 
 if __name__ == '__main__':
