@@ -86,7 +86,6 @@ class DialogModificar(DialogEdit):
         super().__init__(title=title, parent=parent, values=values)
         self.archivo = Path(archivo)
         self.datos_iniciales = self.get_datos()
-        print('datos_iniciales: ', self.datos_iniciales)
         self.combo.lineEdit().setText(self.datos_iniciales[0])
         self.le_nombre.setText(self.datos_iniciales[1])
         self.le_password.setText(self.datos_iniciales[2])
@@ -98,6 +97,8 @@ class DialogModificar(DialogEdit):
 
         """
         carpeta = self.archivo.parents[0].name
+        if carpeta == Path.cwd().name:
+            carpeta = ''
         nombre = self.archivo.stem
         lst_contenido = helpgnupg.descifrar_archivo(self.archivo)
         if len(lst_contenido) > 1:
@@ -108,6 +109,20 @@ class DialogModificar(DialogEdit):
 
         return [carpeta, nombre, password, datos_extra]
 
+    def boton_aceptar(self):
+        """Redefinición del método para poder borrar archivo
+        modificado si procede"""
+        datos = [self.combo.lineEdit().text(),
+                 self.le_nombre.text(),
+                 self.le_password.text(),
+                 self.text_edit.toPlainText()]
+        archivo = helpgnupg.guardar_archivo(datos)
+        helpgnupg.cifrar_archivo(archivo)
+
+        # Borrar archivo si se renombra o cambia ubicación
+        if datos[:2] != self.datos_iniciales[:2]:
+            Path(self.archivo).unlink()
+        self.accept()
 
 
 if __name__ == '__main__':
