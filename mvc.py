@@ -132,6 +132,8 @@ class Visor(QWidget):
         if not Path(item.text(1)).is_dir():
             contenido = descifrar_archivo(item.text(1))
             dialogo = QMessageBox()
+            dialogo.setContentsMargins(50, 50, 15, 15)
+            dialogo.setIcon(QMessageBox.Information)
             if len(contenido) > 1:
                 texto = '\n'.join(contenido[1:])
                 dialogo.setInformativeText(texto)
