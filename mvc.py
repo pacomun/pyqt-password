@@ -3,7 +3,6 @@
 """
 import sys
 import os
-
 from pathlib import Path
 from PyQt5.QtWidgets import (QApplication, QTreeWidget, QTreeWidgetItem,
                              QVBoxLayout, QWidget, QPushButton,
@@ -131,12 +130,14 @@ class Visor(QWidget):
             dialogo = QMessageBox()
             dialogo.setContentsMargins(50, 50, 15, 15)
             dialogo.setIcon(QMessageBox.Information)
+            QApplication.clipboard().setText(contenido[0])
             if len(contenido) > 1:
                 texto = '\n'.join(contenido[1:])
                 dialogo.setInformativeText(texto)
             dialogo.setWindowTitle(item.text(fila))
             dialogo.setText(contenido[0])
             dialogo.exec()
+            QApplication.clipboard().setText('')
 
     def nueva_password(self):
         """Abrimos Diálogo para recibir datos del usuario."""
