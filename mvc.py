@@ -153,6 +153,8 @@ class Visor(QWidget):
     def boton_borrar(self):
         """Borra el archivo seleccionado, con confirmación.
         En caso de carpeta la borrará si está vacía."""
+        if self.selected is None:
+            return
         archivo_a_borrar = Path(self.selected)
         if archivo_a_borrar.is_file():
             msg = f'¿Quieres borrar definitivamente {archivo_a_borrar.name}?'
@@ -178,6 +180,8 @@ class Visor(QWidget):
     def boton_editar(self):
         """Acción para el botón editar."""
         almacen = self.leer_almacen(self.almacen)
+        if self.selected is None:
+            return
         if Path(self.selected).is_file():
             dialogo_modificar = DialogModificar(self.selected,
                                                 "Modificar Ĉlave",
