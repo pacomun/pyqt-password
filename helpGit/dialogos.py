@@ -7,7 +7,7 @@ from helpGit import helpgnupg
 from PyQt5.QtWidgets import (QDialog, QPushButton, QLabel,
                              QLineEdit, QComboBox, QGridLayout,
                              QHBoxLayout, QApplication, QMenu,
-                             QTextEdit)
+                             QTextEdit, QVBoxLayout)
 
 
 class   DialogEdit(QDialog):
@@ -122,6 +122,45 @@ class DialogModificar(DialogEdit):
         # Borrar archivo si se renombra o cambia ubicación
         if datos[:2] != self.datos_iniciales[:2]:
             Path(self.archivo).unlink()
+        self.accept()
+
+
+class DialogoRenombra(QDialog):
+    """Ventana de diálogo para renombrar una carpeta. Recibe como argumentos:
+    parent: Widget padre.
+    title: título de la ventana.
+    carpeta: cadena con la ruta de la carpeta a renombrar.
+    """
+    def __init__(self, title, carpeta, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle=title
+        self.setModal(True)
+        self.carpeta = Path(carpeta)
+        label = QLabel('Edita Nombre de la carpeta: ')
+        self.qline_edit = QLineEdit()
+        self.qline_edit.setText(self.carpeta.name)
+        boton_aceptar = QPushButton('Aceptar')
+        boton_aceptar.clicked.connect(self.aceptar)
+        boton_cancelar = QPushButton('Cancelar')
+        boton_cancelar.clicked.connect(self.reject)
+        vbox = QVBoxLayout(self)
+        hbox_top = QHBoxLayout()
+        hbox_bottom = QHBoxLayout()
+
+        hbox_top.addWidget(label)
+        hbox_top.addWidget(self.qline_edit)
+        vbox.addLayout(hbox_top)
+        hbox_bottom.addWidget(boton_aceptar)
+        hbox_bottom.addWidget(boton_cancelar)
+        vbox.addLayout(hbox_bottom)
+
+    def aceptar(self):
+        """Acción para el botón aceptar."""
+        nuevo_nombre = self.qline_edit.text()
+        nombre = self.carpeta.name
+        if nuevo_nombre != nombre:
+            nuevo_nombre = self.carpeta.with_name(nuevo_nombre)
+            self.carpeta.replace(nuevo_nombre)
         self.accept()
 
 

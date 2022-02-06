@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import (QApplication, QTreeWidget, QTreeWidgetItem,
                              QVBoxLayout, QWidget, QPushButton,
                              QHBoxLayout, QMessageBox)
 from PyQt5.QtCore import Qt
-from helpGit.dialogos import DialogEdit, DialogModificar
+from helpGit.dialogos import DialogEdit, DialogModificar, DialogoRenombra
 from helpGit.helpgnupg import (descifrar_archivo, subir_al_servidor,
                                traer_del_servidor, hacer_commit)
 
@@ -190,6 +190,11 @@ class Visor(QWidget):
                                                 "Modificar Ĉlave",
                                                 self, almacen)
             dialogo_modificar.exec_()
+        elif Path(self.selected):
+            dialogo_carpeta = DialogoRenombra(title='Renombrar Carpeta',
+                                              carpeta=self.selected,
+                                              parent=self)
+            dialogo_carpeta.exec_()
         self.actualizar_datos()
 
     def boton_subir(self):
