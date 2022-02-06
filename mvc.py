@@ -7,24 +7,11 @@ from pathlib import Path
 from PyQt5.QtWidgets import (QApplication, QTreeWidget, QTreeWidgetItem,
                              QVBoxLayout, QWidget, QPushButton,
                              QHBoxLayout, QMessageBox)
-from PyQt5.QtCore import Qt
 from helpGit.dialogos import DialogEdit, DialogModificar, DialogoRenombra
 from helpGit.helpgnupg import (descifrar_archivo, subir_al_servidor,
                                traer_del_servidor, hacer_commit)
 
-
 ALMACEN = '/home/pacomun/tmp/password-store'
-
-
-def desplegar_ruta(listado):
-    """Imprime la lista en formato adecuado."""
-    for elemento in listado:
-        if isinstance(elemento, list):
-            for sub_elem in elemento[1:]:
-                print(elemento[0].name, '->',
-                      sub_elem.name.removesuffix('.gpg'))
-        else:
-            print(elemento.name.removesuffix('.gpg'))
 
 
 class Visor(QWidget):
