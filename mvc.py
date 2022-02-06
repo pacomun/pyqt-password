@@ -3,6 +3,7 @@
 """
 import sys
 import os
+
 from pathlib import Path
 from PyQt5.QtWidgets import (QApplication, QTreeWidget, QTreeWidgetItem,
                              QVBoxLayout, QWidget, QPushButton,
@@ -10,8 +11,13 @@ from PyQt5.QtWidgets import (QApplication, QTreeWidget, QTreeWidgetItem,
 from helpGit.dialogos import DialogEdit, DialogModificar, DialogoRenombra
 from helpGit.helpgnupg import (descifrar_archivo, subir_al_servidor,
                                traer_del_servidor, hacer_commit)
+from helpGit.config import cfg_inicial, write_cfg, read_cfg
 
-ALMACEN = '/home/pacomun/tmp/password-store'
+
+dic_cfg = cfg_inicial()
+if os.path.exists(dic_cfg['pypass_cfg']):
+    dic_cfg = read_cfg(dic_cfg['pypass_cfg'])
+write_cfg(**dic_cfg)
 
 
 class Visor(QWidget):
@@ -198,7 +204,7 @@ class Visor(QWidget):
 def main():
     """Función principal para desplegar aplicación."""
     app = QApplication(sys.argv)
-    win = Visor(ALMACEN)
+    win = Visor(dic_cfg['password_store'])
     win.show()
     sys.exit(app.exec())
 
