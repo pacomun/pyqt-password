@@ -9,7 +9,8 @@ from PyQt5.QtWidgets import (QApplication, QTreeWidget, QTreeWidgetItem,
                              QHBoxLayout, QMessageBox)
 from PyQt5.QtCore import Qt
 from helpGit.dialogos import DialogEdit, DialogModificar
-from helpGit.helpgnupg import descifrar_archivo
+from helpGit.helpgnupg import (descifrar_archivo, subir_al_servidor,
+                               traer_del_servidor, hacer_commit)
 
 
 ALMACEN = '/home/pacomun/tmp/password-store'
@@ -49,7 +50,9 @@ class Visor(QWidget):
     def botones_git(self):
         """Crear botones."""
         b_subir_al_servidor = QPushButton("Subir al servidor")
+        b_subir_al_servidor.clicked.connect(self.boton_subir)
         b_bajar_del_servidor = QPushButton("Bajar del servidor")
+        b_bajar_del_servidor.clicked.connect(self.boton_baja)
         layout_git = QHBoxLayout()
         layout_git.addWidget(b_subir_al_servidor)
         layout_git.addWidget(b_bajar_del_servidor)
@@ -187,6 +190,16 @@ class Visor(QWidget):
                                                 "Modificar Ĉlave",
                                                 self, almacen)
             dialogo_modificar.exec_()
+        self.actualizar_datos()
+
+    def boton_subir(self):
+        """Realiza commit y sube los cambios al servidor Git"""
+        hacer_commit()
+        subir_al_servidor()
+
+    def boton_baja(self):
+        """Realiza 'Push' al servidor y actualiza los datos"""
+        traer_del_servidor()
         self.actualizar_datos()
 
 

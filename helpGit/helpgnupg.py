@@ -6,6 +6,7 @@ from pathlib import Path
 import gnupg
 import secrets
 import string
+import subprocess
 
 
 def get_recipient() -> str:
@@ -110,3 +111,36 @@ def cifrar_archivo(archivo):
         os.remove(archivo)
     else:
         print(encrypted_ascii_data.status)
+
+
+def traer_del_servidor():
+    """Hace pull al servidor repo"""
+    return subprocess.run([
+        'git',
+        'pull',
+    ], check=False)
+
+
+def subir_al_servidor():
+    """Hace Push al servidor repo"""
+    return subprocess.run([
+        'git',
+        'push',
+    ], check=False)
+
+
+def hacer_commit():
+    """Añade archivos y crea el commit"""
+    subprocess.run([
+        'git',
+        'add',
+        '.',
+    ], check=False)
+
+    return subprocess.run([
+        'git',
+        'commit',
+        '--allow-empty-message',
+        '-m',
+        '',
+    ], check=False)
