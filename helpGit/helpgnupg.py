@@ -39,7 +39,7 @@ def generador(ndigit=8):
     return ''.join(secrets.choice(alphabet) for i in range(ndigit))
 
 
-def guardar_archivo(datos) -> bool | str:
+def guardar_archivo(datos) -> str:
     """Recibe lista/tupla con 4 elementos. Con
     estos escribe en archivo."""
     if len(datos) != 4:

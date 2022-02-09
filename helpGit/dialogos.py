@@ -178,6 +178,8 @@ class DialogoConfig(QDialog):
         self.setWindowTitle(title)
         self.setGeometry(600, 400, 800, 300)
         self.d_cfg = configuracion.cfg_inicial()
+        if Path(self.d_cfg['pypass_cfg']).exists():
+            self.d_cfg = configuracion.read_cfg(self.d_cfg['pypass_cfg'])
         self.le_user = QLineEdit()
         self.le_editor = QLineEdit()
         self.le_home = QLineEdit()

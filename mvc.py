@@ -215,6 +215,7 @@ def main():
         win_cfg = DialogoConfig('Configuración')
         win_cfg.exec()
     dic_cfg = read_cfg(dic_cfg['pypass_cfg'])
+    print("Datos leídos de configuración: ", dic_cfg)
     win = Visor(dic_cfg['password_store'])
     win.show()
     sys.exit(app.exec())
