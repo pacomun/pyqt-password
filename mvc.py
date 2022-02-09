@@ -214,6 +214,7 @@ def main():
     if not os.path.exists(dic_cfg['pypass_cfg']) or config:
         win_cfg = DialogoConfig('Configuración')
         win_cfg.exec()
+
     dic_cfg = read_cfg(dic_cfg['pypass_cfg'])
     print("Datos leídos de configuración: ", dic_cfg)
     win = Visor(dic_cfg['password_store'])
