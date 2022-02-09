@@ -7,16 +7,11 @@ from pathlib import Path
 from PyQt5.QtWidgets import (QApplication, QTreeWidget, QTreeWidgetItem,
                              QVBoxLayout, QWidget, QPushButton,
                              QHBoxLayout, QMessageBox)
-from helpGit.dialogos import DialogEdit, DialogModificar, DialogoRenombra
+from helpGit.dialogos import (DialogEdit, DialogModificar, DialogoRenombra,
+                              DialogoConfig)
 from helpGit.helpgnupg import (descifrar_archivo, subir_al_servidor,
                                traer_del_servidor, hacer_commit)
-from helpGit.config import cfg_inicial, write_cfg, read_cfg
-
-
-dic_cfg = cfg_inicial()
-if os.path.exists(dic_cfg['pypass_cfg']):
-    dic_cfg = read_cfg(dic_cfg['pypass_cfg'])
-write_cfg(**dic_cfg)
+from helpGit.configuracion import cfg_inicial, write_cfg, read_cfg
 
 
 class Visor(QWidget):
@@ -78,6 +73,7 @@ class Visor(QWidget):
         """Función que carga en el visor los datos de la
         lista pasada como argumento."""
         datos = self.leer_almacen(self.almacen)
+        print(datos)
         items = []
         self.tree.clear()
         for value in datos:
@@ -210,6 +206,15 @@ class Visor(QWidget):
 def main():
     """Función principal para desplegar aplicación."""
     app = QApplication(sys.argv)
+    dic_cfg = cfg_inicial()
+    config = False
+    if len(sys.argv) > 1:
+        if sys.argv[1] == 'config':
+            config = True
+    if not os.path.exists(dic_cfg['pypass_cfg']) or config:
+        win_cfg = DialogoConfig('Configuración')
+        win_cfg.exec()
+    dic_cfg = read_cfg(dic_cfg['pypass_cfg'])
     win = Visor(dic_cfg['password_store'])
     win.show()
     sys.exit(app.exec())
