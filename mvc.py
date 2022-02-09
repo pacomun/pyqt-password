@@ -108,7 +108,12 @@ class Visor(QWidget):
                 if archivo.is_file():
                     listado.append(archivo)
                 elif archivo.is_dir():
-                    carpeta = self.leer_almacen(archivo.path)
+                    carpeta = []
+                    for sub_carpeta in os.scandir(archivo):
+                        if (not sub_carpeta.name.startswith('.')
+                                and not sub_carpeta.name.startswith('_')):
+                            if sub_carpeta.is_file():
+                                carpeta.append(sub_carpeta)
                     carpeta.insert(0, archivo)
                     listado.append(carpeta)
         return listado
