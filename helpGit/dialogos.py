@@ -3,16 +3,23 @@
 """
 import sys
 from pathlib import Path
-from helpGit import helpgnupg
+from helpGit import helpgnupg, configuracion
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (QDialog, QPushButton, QLabel,
                              QLineEdit, QComboBox, QGridLayout,
                              QHBoxLayout, QApplication, QMenu,
                              QTextEdit, QVBoxLayout)
 
 
-class   DialogEdit(QDialog):
+class DialogEdit(QDialog):
     """Ventana de diálogo para editar datos de la
-    aplicación."""
+    aplicación. Parámetros:
+    title: una cadena para el título de la ventana.
+    parent: Widget padre.
+    values: una lista devuelta por la lectura del
+    directorio de trabajo.
+
+    """
     def __init__(self, title, parent=None, values=None):
         super().__init__(parent)
         self.setWindowTitle(title)
@@ -133,7 +140,7 @@ class DialogoRenombra(QDialog):
     """
     def __init__(self, title, carpeta, parent=None):
         super().__init__(parent)
-        self.setWindowTitle=title
+        self.setWindowTitle(title)
         self.setModal(True)
         self.carpeta = Path(carpeta)
         label = QLabel('Edita Nombre de la carpeta: ')
@@ -164,9 +171,74 @@ class DialogoRenombra(QDialog):
         self.accept()
 
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    win = DialogEdit('Ventana de Diálogo')
-    win.show()
+class DialogoConfig(QDialog):
+    """Documentar..."""
+    def __init__(self, title, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle(title)
+        self.setGeometry(600, 400, 800, 300)
+        self.d_cfg = configuracion.cfg_inicial()
+        self.le_user = QLineEdit()
+        self.le_editor = QLineEdit()
+        self.le_home = QLineEdit()
+        self.le_password_store = QLineEdit()
+        self.le_keyid = QLineEdit()
+        self.le_os = QLineEdit()
+        self.le_pypass_cfg = QLineEdit()
+        self.boton_aceptar = QPushButton('Aceptar')
+        self.boton_aceptar.clicked.connect(self.aceptar)
+        self.empaquetado()
 
-    sys.exit(app.exec())
+    def empaquetado(self):
+        """Empaquetado de etiqueta y Líneas de edición."""
+        grid = QGridLayout(self)
+        label1 = QLabel('Usuario: ')
+        grid.addWidget(label1, 0, 0)
+        self.le_user.setText(self.d_cfg['user'])
+        self.le_user.setReadOnly(True)
+        grid.addWidget(self.le_user, 0, 1)
+        label2 = QLabel('Editor: ')
+        grid.addWidget(label2, 1, 0)
+        self.le_editor.setText(self.d_cfg['editor'])
+        grid.addWidget(self.le_editor, 1, 1)
+        label3 = QLabel('HOME: ')
+        grid.addWidget(label3, 2, 0)
+        self.le_home.setText(self.d_cfg['home'])
+        self.le_home.setReadOnly(True)
+        grid.addWidget(self.le_home, 2, 1)
+        label4 = QLabel('Almacén de Claves: ')
+        grid.addWidget(label4, 3, 0)
+        self.le_password_store.setText(self.d_cfg['password_store'])
+        grid.addWidget(self.le_password_store, 3, 1)
+        label5 = QLabel('keyid: ')
+        grid.addWidget(label5, 4, 0)
+        self.le_keyid.setText(self.d_cfg['keyid'])
+        grid.addWidget(self.le_keyid, 4, 1)
+        label6 = QLabel('Sistema Operativo: ')
+        grid.addWidget(label6, 5, 0)
+        self.le_os.setText(self.d_cfg['os'])
+        self.le_os.setReadOnly(True)
+        grid.addWidget(self.le_os, 5, 1)
+        label7 = QLabel('Archivo de Configuración: ')
+        grid.addWidget(label7, 6, 0)
+        self.le_pypass_cfg.setText(self.d_cfg['pypass_cfg'])
+        self.le_pypass_cfg.setReadOnly(True)
+        grid.addWidget(self.le_pypass_cfg, 6, 1)
+        boton_cancelar = QPushButton('Cancelar')
+        boton_cancelar.clicked.connect(self.reject)
+        hbox = QHBoxLayout()
+        hbox.addWidget(self.boton_aceptar)
+        hbox.addWidget(boton_cancelar)
+        hbox.setContentsMargins(20, 10, 10, 10)
+        grid.addLayout(hbox, 7, 1, 2, 1, Qt.AlignVCenter)
+
+    def aceptar(self):
+        """Acción para botón Aceptar: recoge los datos en el diccionario y
+        guarda la configuración."""
+        self.d_cfg['editor'] = self.le_editor.text()
+        self.d_cfg['password_store'] = self.le_password_store.text()
+        self.d_cfg['keyid'] = self.le_keyid.text()
+
+        print(self.d_cfg)
+        configuracion.write_cfg(**self.d_cfg)
+        self.accept()
