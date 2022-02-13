@@ -207,6 +207,7 @@ def main():
     """Función principal para desplegar aplicación."""
     app = QApplication(sys.argv)
     dic_cfg = cfg_inicial()
+    print(dic_cfg)
     config = False
     if len(sys.argv) > 1:
         if sys.argv[1] == 'config':
@@ -216,7 +217,6 @@ def main():
         win_cfg.exec()
 
     dic_cfg = read_cfg(dic_cfg['pypass_cfg'])
-    print("Datos leídos de configuración: ", dic_cfg)
     win = Visor(dic_cfg['password_store'])
     win.show()
     sys.exit(app.exec())

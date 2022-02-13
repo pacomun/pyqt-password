@@ -65,7 +65,10 @@ def cfg_inicial() -> dict:
     keyid = get_idkey()
 
     # Archivo de configuración.
-    pypass_cfg = home.joinpath('.pypass.cfg')
+    if uname == 'posix':
+        pypass_cfg = home.joinpath('.pypass.cfg')
+    elif uname == 'nt':
+        pypass_cfg = home.joinpath('pypass.cfg')
 
     d_cfg = {'user': user, 'editor': editor, 'home': str(home),
              'password_store': str(password_store),
@@ -92,7 +95,7 @@ def write_cfg(seccion='info', **d_cfg) -> True:
                   'w', encoding='utf-8') as f_cfg:
             config.write(f_cfg)
     elif d_cfg['os'] == 'nt':
-        with open(Path(d_cfg['APPDATA']).joinpath('pypass.cfg'),
+        with open(Path(d_cfg['home']).joinpath('pypass.cfg'),
                   'w', encoding='utf-8') as f_cfg:
             config.write(f_cfg)
 
