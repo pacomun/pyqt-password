@@ -8,7 +8,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (QDialog, QPushButton, QLabel,
                              QLineEdit, QComboBox, QGridLayout,
                              QHBoxLayout, QApplication, QMenu,
-                             QTextEdit, QVBoxLayout)
+                             QTextEdit, QVBoxLayout,
+                             QDialogButtonBox)
 
 
 class DialogEdit(QDialog):
@@ -73,7 +74,7 @@ class DialogEdit(QDialog):
     def boton_aceptar(self):
         """Recuperar datos cumplimentados. Si todo va bien, se guarda
         el archivo cifrado"""
-        if __debug__:
+        if not __debug__:
             print('carpeta: ', self.combo.lineEdit().text())
             print('nombre: ', self.le_nombre.text())
             print('password: ', self.le_password.text())
@@ -89,7 +90,7 @@ class DialogEdit(QDialog):
 
 class DialogModificar(DialogEdit):
     """Clase derivada de DialogoEdit para modificar una clave."""
-    def __init__(self, archivo, title, parent=None, values=None ):
+    def __init__(self, archivo, title, parent=None, values=None):
         super().__init__(title=title, parent=parent, values=values)
         self.archivo = Path(archivo)
         self.datos_iniciales = self.get_datos()
@@ -107,7 +108,12 @@ class DialogModificar(DialogEdit):
         if carpeta == Path.cwd().name:
             carpeta = ''
         nombre = self.archivo.stem
-        lst_contenido = helpgnupg.descifrar_archivo(self.archivo)
+
+        dialogo_pass = DialogoPassword('Password')
+        if dialogo_pass.exec_() == DialogoPassword.Accepted:
+            password = dialogo_pass.get_output()
+
+        lst_contenido = helpgnupg.descifrar_archivo(self.archivo, password)
         if len(lst_contenido) > 1:
             datos_extra = '\n'.join(lst_contenido[1:])
         else:
@@ -244,3 +250,34 @@ class DialogoConfig(QDialog):
         print(self.d_cfg)
         configuracion.write_cfg(**self.d_cfg)
         self.accept()
+
+
+class DialogoPassword(QDialog):
+    """Dialogo para introducir clave de desbloqueo"""
+    def __init__(self, title,  parent=None):
+        super().__init__(parent)
+        self.setWindowTitle(title)
+        qbtn = QDialogButtonBox.Ok | QDialogButtonBox.Cancel
+        self._output = ''
+
+        self.button_box = QDialogButtonBox(qbtn)
+        self.button_box.accepted.connect(self.aceptar)
+        self.button_box.rejected.connect(self.reject)
+
+        self.layout = QVBoxLayout()
+        messaje = QLabel('Introduce clave para desbloquear:')
+        self.layout.addWidget(messaje)
+        self.le_pass = QLineEdit()
+        self.le_pass.setEchoMode(QLineEdit.Password)
+        self.layout.addWidget(self.le_pass)
+        self.layout.addWidget(self.button_box)
+        self.setLayout(self.layout)
+
+    def aceptar(self):
+        """Aceptar botón."""
+        self._output = self.le_pass.text()
+        super().accept()
+
+    def get_output(self):
+        """Retorna el texto de self.le_pass"""
+        return self._output
