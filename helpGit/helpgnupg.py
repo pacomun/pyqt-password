@@ -16,17 +16,19 @@ def get_recipient() -> str:
     return private_key[0]['keyid']
 
 
-def descifrar_archivo(ruta: str) -> list:
+def descifrar_archivo(ruta,  password) -> list:
     """Devuelve una lista con las líneas del archivo
     descifrado."""
     ruta = Path(ruta)
-    gpg = gnupg.GPG(use_agent=True)
+    gpg = gnupg.GPG(use_agent=False)
     gpg.encoding = 'utf-8'
     if not ruta.is_dir():
         with open(ruta, 'rb') as f_arch:
-            datos_claro = gpg.decrypt_file(f_arch)
+            datos_claro = gpg.decrypt_file(f_arch,
+                                           passphrase=password)
+        del password
         if datos_claro.ok is True:
-            if __debug__:
+            if not __debug__:
                 print(str(datos_claro))
             return (str(datos_claro).split('\n'))
 

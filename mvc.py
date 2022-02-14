@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import (QApplication, QTreeWidget, QTreeWidgetItem,
                              QVBoxLayout, QWidget, QPushButton,
                              QHBoxLayout, QMessageBox)
 from helpGit.dialogos import (DialogEdit, DialogModificar, DialogoRenombra,
-                              DialogoConfig)
+                              DialogoConfig, DialogoPassword)
 from helpGit.helpgnupg import (descifrar_archivo, subir_al_servidor,
                                traer_del_servidor, hacer_commit)
 from helpGit.configuracion import cfg_inicial, write_cfg, read_cfg
@@ -123,11 +123,15 @@ class Visor(QWidget):
 
     def doble_clicked(self, item, fila):
         """Hará algo al hacer doble click en la fila."""
-        if __debug__:
+        if not __debug__:
             print('Padre', item.text(fila))
             print('Texto: ', item.text(1))
         if not Path(item.text(1)).is_dir():
-            contenido = descifrar_archivo(item.text(1))
+            dialogo_pass = DialogoPassword('Password', self)
+            if dialogo_pass.exec_() == DialogoPassword.Accepted:
+                password = dialogo_pass.get_output()
+            contenido = descifrar_archivo(item.text(1), password=password)
+            del password
             dialogo = QMessageBox()
             dialogo.setContentsMargins(50, 50, 15, 15)
             dialogo.setIcon(QMessageBox.Information)
