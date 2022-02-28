@@ -29,10 +29,10 @@ changelog=
 noextract=()
 validpgpkeys=()
 source=("$pkgname-$pkgver"::"git+https://github.com/pacomun/pyqt-password.git"
-       "pyqt-password.desktop" "pyqt-pass.sh")
+        "pyqt-password.desktop" "pyqt-pass.sh")
 md5sums=('SKIP'
          '582d1289b64f0376f865226708eb3ce8'
-         '70da60b0ed1105efe66f4a3f35e5771f')
+         'c0289b0fe512f418344280312563ee89')
 prepare() {
     cd "$pkgname-$pkgver"
 }
