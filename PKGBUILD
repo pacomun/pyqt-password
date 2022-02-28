@@ -31,7 +31,7 @@ validpgpkeys=()
 source=("$pkgname-$pkgver"::"git+https://github.com/pacomun/pyqt-password.git"
         "pyqt-password.desktop" "pyqt-pass.sh")
 md5sums=('SKIP'
-         '582d1289b64f0376f865226708eb3ce8'
+         '4b57699f5bb6362a06539832f9364339'
          'c0289b0fe512f418344280312563ee89')
 prepare() {
     cd "$pkgname-$pkgver"
