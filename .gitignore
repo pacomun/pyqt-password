@@ -6,3 +6,4 @@
 /mvc.dist.zip
 /mvc.dist/
 *.pyc
+.Venv/

@@ -11,7 +11,7 @@ import subprocess
 
 def get_recipient() -> str:
     """Consigue keyid privada del ususario"""
-    gpg = gnupg.GPG(use_agent=True)
+    gpg = gnupg.GPG(use_agent=False)
     private_key = gpg.list_keys()
     return private_key[0]['keyid']
 
@@ -26,7 +26,6 @@ def descifrar_archivo(ruta,  password) -> list:
         with open(ruta, 'rb') as f_arch:
             datos_claro = gpg.decrypt_file(f_arch,
                                            passphrase=password)
-        del password
         if datos_claro.ok is True:
             if not __debug__:
                 print(str(datos_claro))

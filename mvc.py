@@ -1,4 +1,7 @@
-"""Documentación del módulo
+"""Aplicación que gestiona archivos cifrados de un almacén de claves
+compatible con el programa PASS de Unix.
+
+
 
 """
 import sys
@@ -11,7 +14,7 @@ from helpGit.dialogos import (DialogEdit, DialogModificar, DialogoRenombra,
                               DialogoConfig, DialogoPassword)
 from helpGit.helpgnupg import (descifrar_archivo, subir_al_servidor,
                                traer_del_servidor, hacer_commit)
-from helpGit.configuracion import cfg_inicial, write_cfg, read_cfg
+from helpGit.configuracion import cfg_inicial, read_cfg
 
 
 class Visor(QWidget):
@@ -131,7 +134,7 @@ class Visor(QWidget):
             if dialogo_pass.exec_() == DialogoPassword.Accepted:
                 password = dialogo_pass.get_output()
             contenido = descifrar_archivo(item.text(1), password=password)
-            del password
+            password = ''  # limpio password
             dialogo = QMessageBox()
             dialogo.setContentsMargins(50, 50, 15, 15)
             dialogo.setIcon(QMessageBox.Information)
