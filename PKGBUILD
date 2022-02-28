@@ -1,0 +1,65 @@
+# Maintainer: Francisco Muñoz <pacomun.gm@gmail.com>
+pkgname=pyqt-password
+pkgver=1.0
+pkgrel=0
+epoch=
+pkgdesc="Aplicación gui para gestion de contraseñas."
+arch=('any')
+url="https://github.com/pacomun/pyqt-password"
+license=('GPL')
+groups=()
+depends=('python>=3.0'
+         'libspeechd'
+         'gtk3'
+         'qt5-tools'
+         'qt5-wayland'
+         'qt5-webengine'
+         'qt5-svg'
+        )
+makedepends=('python-virtualenv' 'git')
+checkdepends=()
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=()
+install="install.sh"
+changelog=
+noextract=()
+validpgpkeys=()
+source=("$pkgname-$pkgver"::"git+https://github.com/pacomun/pyqt-password.git"
+       "pyqt-password.desktop" "pyqt-pass.sh")
+md5sums=('SKIP'
+         '582d1289b64f0376f865226708eb3ce8'
+         '70da60b0ed1105efe66f4a3f35e5771f')
+prepare() {
+    cd "$pkgname-$pkgver"
+}
+
+build() {
+    cd "$pkgname-$pkgver"
+    echo "Creando entorno virtual"
+    python -m venv .Venv/
+    echo "Entrando en el entorno creado"
+    source .Venv/bin/activate
+    echo "Instalando requisitos"
+    pip install -r requirenments.txt
+    echo "Desactivado el entorno"
+    deactivate
+	}
+
+check() {
+    cd "$pkgname-$pkgver"
+}
+
+package() {
+    cd "$pkgname-$pkgver"
+    mkdir -p "$pkgdir"/usr/bin
+    mkdir -p "$pkgdir"/usr/share/"$pkgname"/.Venv
+    mkdir -p "$pkgdir"/usr/share/applications
+    cp -r .Venv/* "$pkgdir"/usr/share/"$pkgname"/.Venv
+    cp -r * "$pkgdir"/usr/share/"$pkgname"
+    cp ../pyqt-pass.sh "$pkgdir"/usr/bin
+    cp ../pyqt-password.desktop "$pkgdir"/usr/share/applications
+}
