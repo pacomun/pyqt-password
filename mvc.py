@@ -2,7 +2,6 @@
 compatible con el programa PASS de Unix.
 
 
-
 """
 import sys
 import os
@@ -133,6 +132,8 @@ class Visor(QWidget):
             dialogo_pass = DialogoPassword('Password', self)
             if dialogo_pass.exec_() == DialogoPassword.Accepted:
                 password = dialogo_pass.get_output()
+            else:
+                return
             contenido = descifrar_archivo(item.text(1), password=password)
             password = ''  # limpio password
             dialogo = QMessageBox()
