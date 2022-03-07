@@ -75,7 +75,6 @@ class Visor(QWidget):
         """Función que carga en el visor los datos de la
         lista pasada como argumento."""
         datos = self.leer_almacen(self.almacen)
-        print(datos)
         items = []
         self.tree.clear()
         for value in datos:
