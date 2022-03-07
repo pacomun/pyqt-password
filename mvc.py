@@ -189,10 +189,13 @@ class Visor(QWidget):
         if self.selected is None:
             return
         if Path(self.selected).is_file():
-            dialogo_modificar = DialogModificar(self.selected,
+            try:
+                dialogo_modificar = DialogModificar(self.selected,
                                                 "Modificar Ĉlave",
                                                 self, almacen)
-            dialogo_modificar.exec_()
+                dialogo_modificar.exec_()
+            except ValueError:
+                print("No se ha introducido la clave para descifrar")
         elif Path(self.selected):
             dialogo_carpeta = DialogoRenombra(title='Renombrar Carpeta',
                                               carpeta=self.selected,

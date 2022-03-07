@@ -7,3 +7,4 @@
 /mvc.dist/
 *.pyc
 .Venv/
+/Venv/

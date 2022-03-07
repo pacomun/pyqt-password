@@ -112,6 +112,8 @@ class DialogModificar(DialogEdit):
         dialogo_pass = DialogoPassword('Password')
         if dialogo_pass.exec_() == DialogoPassword.Accepted:
             password = dialogo_pass.get_output()
+        else:
+            raise ValueError('No se ha suministrado password')
 
         lst_contenido = helpgnupg.descifrar_archivo(self.archivo, password)
         if len(lst_contenido) > 1:
