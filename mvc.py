@@ -217,7 +217,6 @@ def main():
     """Función principal para desplegar aplicación."""
     app = QApplication(sys.argv)
     dic_cfg = cfg_inicial()
-    print(dic_cfg)
     config = False
     if len(sys.argv) > 1:
         if sys.argv[1] == 'config':
