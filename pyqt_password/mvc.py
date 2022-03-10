@@ -9,11 +9,11 @@ from pathlib import Path
 from PyQt5.QtWidgets import (QApplication, QTreeWidget, QTreeWidgetItem,
                              QVBoxLayout, QWidget, QPushButton,
                              QHBoxLayout, QMessageBox)
-from helpGit.dialogos import (DialogEdit, DialogModificar, DialogoRenombra,
+from .helpGit.dialogos import (DialogEdit, DialogModificar, DialogoRenombra,
                               DialogoConfig, DialogoPassword)
-from helpGit.helpgnupg import (descifrar_archivo, subir_al_servidor,
+from .helpGit.helpgnupg import (descifrar_archivo, subir_al_servidor,
                                traer_del_servidor, hacer_commit)
-from helpGit.configuracion import cfg_inicial, read_cfg
+from .helpGit.configuracion import cfg_inicial, read_cfg
 
 
 class Visor(QWidget):
@@ -95,7 +95,11 @@ class Visor(QWidget):
         self.tree.insertTopLevelItems(0, items)
 
     def leer_almacen(self, ruta):
-        """Guardamos en una lísta los archivo del almacén."""
+        """Guardamos en una lísta los archivo del almacén. Esa función debo rescribirla
+        de forma recursiva para que lea cualquier nivel de profundidad. Ahora
+        sólo lee un nivel de directorio.
+
+        """
         if not os.path.exists(ruta):
             raise ValueError('La ruta no existe', ruta)
         listado = []
@@ -116,7 +120,7 @@ class Visor(QWidget):
         return listado
 
     def seleccion(self, index):
-        """Hace algo al cambiar la selección"""
+        """Actualiza self.selected al cambiar la selección"""
         if __debug__:
             print(index.data())
             print(index.sibling(index.row(), 1).data())
@@ -190,8 +194,8 @@ class Visor(QWidget):
         if Path(self.selected).is_file():
             try:
                 dialogo_modificar = DialogModificar(self.selected,
-                                                "Modificar Ĉlave",
-                                                self, almacen)
+                                                    "Modificar Ĉlave",
+                                                    self, almacen)
                 dialogo_modificar.exec_()
             except ValueError:
                 print("No se ha introducido la clave para descifrar")

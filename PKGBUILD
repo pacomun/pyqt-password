@@ -1,7 +1,7 @@
 # Maintainer: Francisco Muñoz <pacomun.gm@gmail.com>
 pkgname=pyqt-password
-pkgver=1.0
-pkgrel=1
+pkgver=1.1
+pkgrel=0
 epoch=
 pkgdesc="Aplicación gui para gestion de contraseñas."
 arch=('any')
@@ -9,14 +9,10 @@ url="https://github.com/pacomun/pyqt-password"
 license=('GPL')
 groups=()
 depends=('python>=3.0'
-         'libspeechd'
-         'gtk3'
-         'qt5-tools'
-         'qt5-wayland'
-         'qt5-webengine'
-         'qt5-svg'
+         'python-gnupg'
+         'python-qtpy'
         )
-makedepends=('python-virtualenv' 'git')
+makedepends=('git')
 checkdepends=()
 optdepends=()
 provides=()
@@ -29,7 +25,7 @@ changelog=
 noextract=()
 validpgpkeys=()
 source=("$pkgname-$pkgver"::"git+https://github.com/pacomun/pyqt-password.git"
-        "pyqt-password.desktop" "pyqt-pass.sh")
+        "pyqt-password.desktop" "pyqt-password.py")
 md5sums=('SKIP'
          '4b57699f5bb6362a06539832f9364339'
          'c0289b0fe512f418344280312563ee89')

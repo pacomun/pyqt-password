@@ -3,7 +3,7 @@
 """
 import sys
 from pathlib import Path
-from helpGit import helpgnupg, configuracion
+from pyqt_password.helpGit import helpgnupg, configuracion
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (QDialog, QPushButton, QLabel,
                              QLineEdit, QComboBox, QGridLayout,
