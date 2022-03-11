@@ -35,15 +35,7 @@ prepare() {
 
 build() {
     cd "$pkgname-$pkgver"
-    echo "Creando entorno virtual"
-    python -m venv .Venv/
-    echo "Entrando en el entorno creado"
-    source .Venv/bin/activate
-    echo "Instalando requisitos"
-    pip install -r requirenments.txt
-    echo "Desactivado el entorno"
-    deactivate
-	}
+}
 
 check() {
     cd "$pkgname-$pkgver"
