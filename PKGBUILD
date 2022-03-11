@@ -46,7 +46,10 @@ package() {
     cd "$pkgname-$pkgver"
     mkdir -p "$pkgdir"/usr/bin
     mkdir -p "$pkgdir"/usr/share/applications
+    mkdir -p "$pkgdir"/usr/share/"$pkgname"
     python setup.py install --root="$pkgdir" --optimize=1
     cp ../pyqt-password.py "$pkgdir"/usr/bin
     cp ../pyqt-password.desktop "$pkgdir"/usr/share/applications
+    cp LICENSE "$pkgdir"/usr/share/"$pkgname"
+    cp README.md "$pkgdir"/usr/share/"$pkgname"
 }
