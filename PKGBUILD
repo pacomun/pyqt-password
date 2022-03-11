@@ -12,7 +12,7 @@ depends=('python>=3.0'
          'python-gnupg'
          'python-qtpy'
         )
-makedepends=('git')
+makedepends=('git' 'python-setuptools')
 checkdepends=()
 optdepends=()
 provides=()
@@ -28,13 +28,14 @@ source=("$pkgname-$pkgver"::"git+https://github.com/pacomun/pyqt-password.git"
         "pyqt-password.desktop" "pyqt-password.py")
 md5sums=('SKIP'
          '4b57699f5bb6362a06539832f9364339'
-         'c0289b0fe512f418344280312563ee89')
+         '7eef4d94ad1d23ac29bea797d20b25dd')
 prepare() {
     cd "$pkgname-$pkgver"
 }
 
 build() {
     cd "$pkgname-$pkgver"
+    python setup.py build
 }
 
 check() {
@@ -44,10 +45,8 @@ check() {
 package() {
     cd "$pkgname-$pkgver"
     mkdir -p "$pkgdir"/usr/bin
-    mkdir -p "$pkgdir"/usr/share/"$pkgname"/.Venv
     mkdir -p "$pkgdir"/usr/share/applications
-    cp -r .Venv/* "$pkgdir"/usr/share/"$pkgname"/.Venv
-    cp -r * "$pkgdir"/usr/share/"$pkgname"
-    cp ../pyqt-pass.sh "$pkgdir"/usr/bin
+    python setup.py install --root="$pkgdir" --optimize=1
+    cp ../pyqt-password.py "$pkgdir"/usr/bin
     cp ../pyqt-password.desktop "$pkgdir"/usr/share/applications
 }
