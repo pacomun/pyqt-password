@@ -209,11 +209,27 @@ class Visor(QWidget):
     def boton_subir(self):
         """Realiza commit y sube los cambios al servidor Git"""
         hacer_commit()
-        subir_al_servidor()
+        salida_push = subir_al_servidor()
+        aviso = QMessageBox()
+        if salida_push.returncode == 0:
+            aviso.setIcon(QMessageBox.Information)
+            aviso.setText('Subida realizada con éxito')
+        else:
+            aviso.setIcon(QMessageBox.Warning)
+            aviso.setText(f'Error: código {salida_push.returncode}')
+        aviso.exec()
 
     def boton_baja(self):
         """Realiza 'Push' al servidor y actualiza los datos"""
-        traer_del_servidor()
+        bajada_pull = traer_del_servidor()
+        aviso = QMessageBox()
+        if bajada_pull.returncode == 0:
+            aviso.setIcon(QMessageBox.Information)
+            aviso.setText('Bajada realizada con éxito')
+        else:
+            aviso.setIcon(QMessageBox.Warning)
+            aviso.setText(f'Error: códiogo {bajada_pull.returncode}')
+        aviso.exec()
         self.actualizar_datos()
 
 
