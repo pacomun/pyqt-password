@@ -40,6 +40,48 @@ En otras distribuciones podemos instalarla de la siguiente manera:
 git clone https://githug.com/pacomun/pyqt-password
 cd pyqt-password
    #+end_src
+2. En caso de realizar la instalación con entorno virtual, creamos el
+   entorno e instalamos las dependencias.
+
+   #+begin_src shell
+python -m venv Venv
+source Venv/bin/activate
+pip install -r requeriments.txt
+   #+end_src
+
+y lanzamos la aplicación con
+: (Venv)$ pyqt-password.py
+
+Para instalarla en el sistema, instalamos los paquetes de /Python/
+correspondientes a PyQt5 y python-gnupg.
+
+Creamos el paquete instalable de la aplicación con el siguiente comando
+#+begin_src shell
+python setpup sdist
+pip install dist/pyqt-password-1.0.tar.gz
+#+end_src
+
+Seguidamente copiamos el archivo
+=pyqt-password.desktop= en =/usr/share/applications/= y el archivo
+=pyqt-password.py= en =/usr/bin=.
 
 * Instalación en Windows
+La instalación en Windows, me ha dado más dolores de cabeza hasta llegar a
+la forma que me parece más segura. Clonamos el repositorio, creamos el
+entorno virtual e instalamos los requerimientos.
+
+Con el entorno virtual activado instalamos mediante =pip= el paquete
+=pyinstaller= y ejecutamos el siguiente comando para conseguir un .exe
+
+#+begin_src shell
+pyinstaller -w pyqt-password.py
+#+end_src
+
+Se crea un directorio que contiene todos los archivos necesarios y
+contiene el archivo =pyqt-password.exe=
+
+Este directorios lo copiamos integro al lugar donde queremos instalar la
+aplicación y creamos acceso directo del archivo =pyqt-password.exe= y lo
+colocamos, por ejemplo en el escritorio, para tomarlo como lanzador de la
+aplicación.
 * Como utilizar
