@@ -28,7 +28,7 @@ Como dependencia de paquetes de /Python/, necesitamos instalar *PyQt5* y
 
 * Instalación en Linux
 En Linux es mejor instalar la aplicación como paquete del sistema, así
-como sus dependencia. Pero podemos instalarla con entorno virtual si lo
+como sus dependencias. Pero podemos instalarla con entorno virtual si lo
 preferimos.
 ** Instalación en Arch Linux
 En el repositorio he añadido el PKGBUILD que crea un paquete para instalar
