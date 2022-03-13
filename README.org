@@ -1,0 +1,45 @@
+#+TITLE: Readme
+#+AUTHOR: Francisco Muñoz
+* PYQT-PASSWORD
+/Pyqt-password/ es una aplicación escrita en /Python/ con las librerías
+/Pyqt5/. El objetivo de ésta es disponer de una aplicación GUI para
+gestionar las contraseñas que vengo almacenando con  la aplicación de
+/Unix/ [[https://www.passwordstore.org/][pass]].
+
+Utilizo =pass= para gestionar, desde la línea de comando, las contraseñas
+desde Linux. Para utilizarlas en el smartphone con /android/ utilizo la
+app compatible [[https://play.google.com/store/apps/details?id=dev.msfjarvis.aps&hl=en&gl=US][password store]].
+
+El depósito de contraseñas se sincroniza mediante repositorios /Git/,
+tanto en el teléfono, en el ordenador con Linux y en el ordenador con
+Windows.
+
+Para cifrar las contraseñas utiliza par de claves [[https://gnupg.org/][GnuPG]].
+* Requerimientos
+Necesitamos para que funcione la aplicación, *Python* instalado
+correctamente, en Windows; en Linux ya viene por defecto instalado.
+También tenemos que disponer de *GnuPG* y un par de claves generadas.
+Estas serán las mismas para los distintos dispositivos en los que queramos
+sincronizar el depósito, por lo que tendremos que exportarlas a los
+dispositivos en cuestión. También tenemos que tener instalado [[https://git-scm.com/][Git]].
+
+Como dependencia de paquetes de /Python/, necesitamos instalar *PyQt5* y
+*python-gnupg*. Estas se instalan con el archivo =requeriments.txt=.
+
+* Instalación en Linux
+En Linux es mejor instalar la aplicación como paquete del sistema, así
+como sus dependencia. Pero podemos instalarla con entorno virtual si lo
+preferimos.
+** Instalación en Arch Linux
+En el repositorio he añadido el PKGBUILD que crea un paquete para instalar
+en Arch Linux. Si esta es tu distribución lo tienes ya hecho.:-)
+** Instalar en otras distribución
+En otras distribuciones podemos instalarla de la siguiente manera:
+1. Clonamos el repositorio
+   #+begin_src shell
+git clone https://githug.com/pacomun/pyqt-password
+cd pyqt-password
+   #+end_src
+
+* Instalación en Windows
+* Como utilizar
