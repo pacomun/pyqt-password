@@ -1,5 +1,6 @@
 #+TITLE: Readme
 #+AUTHOR: Francisco Muñoz
+#+startup: inlineimages
 * PYQT-PASSWORD
 /Pyqt-password/ es una aplicación escrita en /Python/ con las librerías
 /Pyqt5/. El objetivo de ésta es disponer de una aplicación GUI para
@@ -85,3 +86,6 @@ aplicación y creamos acceso directo del archivo =pyqt-password.exe= y lo
 colocamos, por ejemplo en el escritorio, para tomarlo como lanzador de la
 aplicación.
 * Como utilizar
+
+#+attr_org: :width 600
+[[file:captura_pyqt-password.png]]
