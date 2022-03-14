@@ -91,3 +91,20 @@ aplicación.
 #+caption: ventana de la aplicación
 #+attr_html: :width 300
 [[file:captura_pyqt-password.png]]
+
+En la ventana principal encontramos  dos botones en la parte superior con las
+etiquetas «Subir al servidor» y «Bajar del servidor», al pulsar subimos los
+cambios al servidor Git, o bien, actualizamos bajando los cambios del servidor
+Git.
+
+En la parte central se despliega en árbol las carpetas y las distinta claves
+guardadas. Al realizar una doble pulsación en cualquier clave, no pedirá la
+contraseña de desbloqueo (nuestra contraseña para la clave gpg). Si la clave se
+descifra con éxito, nos desplegará una ventana de información con los datos del
+archivo de clave, a la vez que, copia la contraseña al porta-papeles. Esta
+contraseña se borra del porta-papeles cuando cerramos la ventana de la clave
+desbloqueada.
+
+Podemos, con los botones del fondo, borrar una clave, o carpeta vacía; editar la
+clave seleccionada previamente, o introducir una nueva clave mediante el botón
+Nuevo.
