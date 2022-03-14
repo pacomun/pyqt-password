@@ -88,4 +88,6 @@ aplicación.
 * Como utilizar
 
 #+attr_org: :width 600
+#+caption: ventana de la aplicación
+#+attr_html: :width 300
 [[file:captura_pyqt-password.png]]
