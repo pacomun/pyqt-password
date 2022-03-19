@@ -1,6 +1,6 @@
 # Maintainer: Francisco Muñoz <pacomun.gm@gmail.com>
 pkgname=pyqt-password
-pkgver=1.1
+pkgver=1.2
 pkgrel=0
 epoch=
 pkgdesc="Aplicación gui para gestion de contraseñas."
