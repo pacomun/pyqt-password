@@ -51,5 +51,5 @@ package() {
     cp ../pyqt-password.py "$pkgdir"/usr/bin
     cp ../pyqt-password.desktop "$pkgdir"/usr/share/applications
     cp LICENSE "$pkgdir"/usr/share/"$pkgname"
-    cp README.md "$pkgdir"/usr/share/"$pkgname"
+    cp README.org "$pkgdir"/usr/share/"$pkgname"
 }
